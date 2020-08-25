@@ -5,3 +5,5 @@
 现在简书限制越来越多, 将部分有用的学习笔记重新整理后迁移到个人仓库
 
 ## 学习笔记
+
+- [React-Native 采坑日记](https://github.com/ShenYj/ShenYj.github.io/blob/master/React-Native/React-Native.md)
