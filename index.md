@@ -6,4 +6,4 @@
 
 ## 学习笔记
 
-- [React-Native 采坑日记](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/React-Native.md)
+- [React-Native 采坑日记](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/React-Native采坑日记.md)
