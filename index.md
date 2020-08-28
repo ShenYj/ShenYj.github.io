@@ -1,4 +1,4 @@
-# ShenYj.github.io
+# 勤奋是学习的枝叶，当然很苦，智慧是学习的花朵，当然香郁。
 
 记录自己的学习笔记, 简书地址:[ShenYj](https://www.jianshu.com/u/5ec5747435a2)
 
