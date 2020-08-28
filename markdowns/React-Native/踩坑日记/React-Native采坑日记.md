@@ -120,7 +120,7 @@ fatal: unable to access 'https://chromium.googlesource.com/webm/libwebp/': Faile
   ![SDWebImageWebPCoder依赖版本.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/SDWebImageWebPCoder依赖版本.png?raw=true)
   ![描述文件路径及默认源.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/描述文件路径及默认源.png?raw=true)
   换源保存后重新执行`pod install --verbose --no-repo-update`结果失败, 一看错误, 源地址没变, 如果你仔细看过, 在`描述文件路径及默认源`这张图中可以发现疑点, 我使用了`Trunk`源, 但是改的是`Master`中的源地址, 而我`podspec`也优先指定了`Trunk`源, 所以上一步换源无效, 重新修改对应的源地址后, 执行中验证确认修改成功
-  ![这次才换源成功.png](https://upload-images.jianshu.io/upload_images/2209298-5752732c6797d86e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  ![这次才换源成功.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/这次才换源成功.png?raw=true)
   到此完成`CocoaPods`依赖库安装
   
   `补充:`关于`libwebp`路径我已经在截图中展示了, 没有详细介绍, 可以根据我截图中的路径直接查找, 为了解决复杂的环境及场景, 可以通过`find path -iname libwebp`来查找路径:  
