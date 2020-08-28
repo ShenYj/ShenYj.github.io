@@ -88,18 +88,18 @@
 - `2020-07-20` 好久没写过`RN`了, 换了设备随着上次升级`TypeScript`这次重新回到`RN`又一次升级了, 重新搭建`React-Native`环境,  因为`0.62`更换了`CocoaPods`管理`iOS`依赖库, 准备先把`Android`环境跑通, 首次执行`react-native run-android`遭遇滑铁卢, 情理之中, 意料之内.  
 
   在运行`react-native run-android`后报错如图:  
-  ![run-android 报错.png](https://upload-images.jianshu.io/upload_images/2209298-941f6e8ec913de72.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
+  ![run-android 报错.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/run-android%20报错.png?raw=true)  
   进入路径下对比发现:  
-  ![此时路径下文件状态.png](https://upload-images.jianshu.io/upload_images/2209298-fd2a514951717c38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
+  ![此时路径下文件状态.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/此时路径下文件状态.png?raw=true)  
   分别去了上层目录下对比发现, 很有可能是文件没有下载完整导致, 反复执行`react-native run-android`都是没有意义的, 于是删除文件后, 重新执行`react-native run-android`等待下载安装依赖包  
-  ![run-android.gif](https://upload-images.jianshu.io/upload_images/2209298-d3b8778b77e493bf.gif?imageMogr2/auto-orient/strip)  
+  ![run-android.gif](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/run-android.gif?raw=true)  
   从终端的输出信息来看, 我的猜想是正确的, 最后对比了下文件正确的样子  
-  ![该有的样子.png](https://upload-images.jianshu.io/upload_images/2209298-c536a1894f072d1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  ![该有的样子.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/该有的样子.png?raw=true)
 
 - `2020-07-20` 安装`CocoaPods`依赖库失败, 因为项目使用到了`react-native-fast-image`, 这个库是基于`SD`的封装, `SD`又使用到了[libwebp](https://github.com/webmproject/libwebp), 在`CDN`加持下, 经过一系列依赖库的安装等待后, 迎来了`iOS`环境的首个报错:  
 
-  ![run-ios.gif](https://upload-images.jianshu.io/upload_images/2209298-7b7d69f1458ec77d.gif?imageMogr2/auto-orient/strip)
-  ![libwebp安装失败大特写.png](https://upload-images.jianshu.io/upload_images/2209298-343744fe27466687.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  ![run-ios.gif](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/run-ios.gif)
+  ![libwebp安装失败大特写.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/libwebp安装失败大特写.png?raw=true)
 
   `Cloning into '/var/folders/6s/5hf9z6_138v68pqd7v891pd80000gn/T/d20200720-84015-8v2sj1'...
 fatal: unable to access 'https://chromium.googlesource.com/webm/libwebp/': Failed to connect to chromium.googlesource.com port 443: Operation timed out`  
@@ -117,8 +117,8 @@ fatal: unable to access 'https://chromium.googlesource.com/webm/libwebp/': Faile
   替换成: `https://github.com/webmproject/libwebp.git`  
    ```  
 
-  ![SDWebImageWebPCoder依赖版本.png](https://upload-images.jianshu.io/upload_images/2209298-aa9d48614801499e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-  ![描述文件路径及默认源.png](https://upload-images.jianshu.io/upload_images/2209298-ce5301ec6f04db95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  ![SDWebImageWebPCoder依赖版本.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/SDWebImageWebPCoder依赖版本.png?raw=true)
+  ![描述文件路径及默认源.png](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/描述文件路径及默认源.png?raw=true)
   换源保存后重新执行`pod install --verbose --no-repo-update`结果失败, 一看错误, 源地址没变, 如果你仔细看过, 在`描述文件路径及默认源`这张图中可以发现疑点, 我使用了`Trunk`源, 但是改的是`Master`中的源地址, 而我`podspec`也优先指定了`Trunk`源, 所以上一步换源无效, 重新修改对应的源地址后, 执行中验证确认修改成功
   ![这次才换源成功.png](https://upload-images.jianshu.io/upload_images/2209298-5752732c6797d86e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
   到此完成`CocoaPods`依赖库安装
