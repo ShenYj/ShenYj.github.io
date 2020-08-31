@@ -1,3 +1,9 @@
+---
+layout: post
+title: "React-Native 踩坑日记"
+date: 2020-08-31
+---
+
 # RN踩坑
 
 - 环境错误  
