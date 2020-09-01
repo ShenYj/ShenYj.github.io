@@ -1,0 +1,158 @@
+<p>layout: page
+title: “React-Native 踩坑日记”
+date: 2020-08-31
+theme: jekyll-theme-cayman</p>
+
+<h1 id="rn踩坑">RN踩坑</h1>
+
+<ul>
+  <li>
+    <p>环境错误</p>
+
+    <p>第一次接触<code class="language-plaintext highlighter-rouge">RN</code>，肯定是从配置环境入手，完成了双端的编译运行，这仅仅是个开始
+关于RN的各种报错原因及解决方案，可以参考这位大神的总结<br />
+<a href="https://www.jianshu.com/p/98c8f2a970eb">React Native开发错误警告处理总结（已解决 ！持续更新</a></p>
+
+    <p>补充:<br />
+如果偶尔遇到了一些网上搜不到的报错信息，或者尝试了网上的方法无效，不妨关掉Debug模式，关闭调试浏览器页面，关闭模拟器，关闭js服务，重新run一次，偶尔的情况下，不做任何调整就能恢复正常，还有调试模式下无法断点拦截，或者断点错位，都可以试试<br />
+<a href="https://www.jianshu.com/p/9486226eefcc">我在配置RN环境中遇到的错误及解决方案总结</a></p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">flex</code>布局</p>
+
+    <p>第一次使用<code class="language-plaintext highlighter-rouge">flex</code>布局，上手写了个非常非常简单的界面（修改密码功能），写完后跑在<code class="language-plaintext highlighter-rouge">Android</code>机上，键盘弹起后，发现控件的高度被挤压了…..</p>
+    <ul>
+      <li>解决方案:</li>
+      <li>设定高度</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">display</code>: 布局中使用了绝对布局，那么<code class="language-plaintext highlighter-rouge">display</code>将在Android下失效</p>
+
+    <p>解决方案：</p>
+
+    <p>设定控件的宽高，来达到控件显隐的控制效果</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">TextInput</code>: iOS下<code class="language-plaintext highlighter-rouge">TextInput</code>中文<code class="language-plaintext highlighter-rouge">BUG</code></p>
+
+    <p>解决方案:</p>
+
+    <p>RN版本还处于不断更新完善中，项目中一旦决定采用了某个指定版本，一般不会轻易升级RN版本，例如我们项目使用的是 <code class="language-plaintext highlighter-rouge">v55.4</code>，<code class="language-plaintext highlighter-rouge">iOS</code>下 <code class="language-plaintext highlighter-rouge">TextInput</code>输入中文的<code class="language-plaintext highlighter-rouge">BUG</code>相信不少人应该遇到过了，网上也有很多临时解决方法，但我感觉都不太完善，按照网上的方法可以解决原生输入法的问题，但是在搜狗输入法下还是会有点问题，在后续的RN版本中已经修复了这个BUG，由于项目不打算升级RN版本，采取了修改源码的方式来修复这个BUG，麻烦的就是，要修改开发环境的源码，同时还要修改构建机源码，避免今后构建机<code class="language-plaintext highlighter-rouge">npm install</code>后问题复现，还要在脚本中特殊处理，避免今后出现问题</p>
+
+    <p><a href="https://github.com/facebook/react-native/pull/18456/files#diff-8eb50d68d87e28556c034717cd58a86e">TextInput Fix controlled TextInput for Chinese (and other languages) #18456</a></p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">stickyHeaderIndices</code>会导致后一个控件二次调用<code class="language-plaintext highlighter-rouge">componentDidMount</code>方法</p>
+
+    <p>用过RN的人不一定熟悉这个属性，它是ScrollView用于控制内部某个子控件是否悬挂的，如果你的页面没有什么特殊场景，可能不会造成什么影响，然后我们需要悬挂的是个<code class="language-plaintext highlighter-rouge">WebView</code>，内嵌了一个H5的 <code class="language-plaintext highlighter-rouge">MapView</code>，别问我为啥这样，因为这样就不需要客户端挂VPN了，同时这个控件下面的界面稍微复杂一点，是单独封装了一个用于展示路线的控件，包括途径地点，两点之间的出行方式，详细步骤等介绍</p>
+
+    <p>解决方案:</p>
+
+    <p>调整控件顺序，尽量找一个即便是<code class="language-plaintext highlighter-rouge">componentDidMount</code>被多次调用了，也不会产生什么影响的控件在悬挂控件下面，如<code class="language-plaintext highlighter-rouge">Modal</code>的控件</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">FlatList</code>的<code class="language-plaintext highlighter-rouge">ListFooterComponent</code></p>
+
+    <p>列表中常见的场景，当列表数据全部加载完毕，会提示“全部加载完毕”， 先描述下我的实现方式
+界面顶部一个导航栏，下面一个列表触底，界面布局没有使用<code class="language-plaintext highlighter-rouge">Flex</code>， 而是通过屏幕的高度直接限定
+当显示”全部加载完毕”时，<code class="language-plaintext highlighter-rouge">iOS</code>下正常，而<code class="language-plaintext highlighter-rouge">Android</code>下没有显示，正当我一脸懵逼的时候，给<code class="language-plaintext highlighter-rouge">ListFooterComponent</code>加了个背景色，给<code class="language-plaintext highlighter-rouge">FlatList</code>加了个<code class="language-plaintext highlighter-rouge">marginbottom</code>，发现<code class="language-plaintext highlighter-rouge">Android</code>的<code class="language-plaintext highlighter-rouge">ListFooterComponent</code>这货超出屏幕了</p>
+
+    <p>解决方案:</p>
+
+    <p>起初的解决方案是，在Android下加了一个间距，最后是设置了<code class="language-plaintext highlighter-rouge">render</code>中最外层<code class="language-plaintext highlighter-rouge">View</code>的<code class="language-plaintext highlighter-rouge">flex</code></p>
+  </li>
+  <li>
+    <p><a href="http://npm.taobao.org/package/react-native-view-shot">react-native-view-shot</a>截图，<code class="language-plaintext highlighter-rouge">Android</code> 下报错:</p>
+
+    <p><code class="language-plaintext highlighter-rouge">Trying to resolve view with tag XXXX which doesn't exist</code></p>
+
+    <p><code class="language-plaintext highlighter-rouge">on Android, getting "Trying to resolve view with tag '{tagID}' which doesn't exist"</code></p>
+
+    <ul>
+      <li>you need to make sure collapsable is set to false if you want to snapshot a View. Some content might even need to be wrapped into such &lt;View collapsable={false}&gt; to actually make them snapshotable! Otherwise that view won’t reflect any UI View. (found by @gaguirre)</li>
+    </ul>
+
+    <p>Alternatively, you can use the ViewShot component that will have collapsable={false} set to solve this problem.</p>
+
+    <ul>
+      <li>先来说下界面结构：</li>
+    </ul>
+
+    <p>-ScrollView<br />
+ —-WebView 需要截取的控件<br />
+ —-View    绝对布局的一个遮罩层<br />
+ -ScrollView</p>
+
+    <p>业务需求，整个页面都是H5写的，当点击截屏的时候，<code class="language-plaintext highlighter-rouge">H5</code>会将<code class="language-plaintext highlighter-rouge">WebView</code>中的<code class="language-plaintext highlighter-rouge">H5</code>页面完全展开，返回一个高度，然后RN这边根据高度截取整个H5页面，本身我是一个<code class="language-plaintext highlighter-rouge">iOS Developer</code>，按理讲WebView里面也是有个<code class="language-plaintext highlighter-rouge">ScrollView</code>的，但是截屏后死活不对，只有一屏大小；于是将外层<code class="language-plaintext highlighter-rouge">View</code>节点改成了<code class="language-plaintext highlighter-rouge">ScrollView</code>，当截屏的时候，重新设置<code class="language-plaintext highlighter-rouge">WebView</code>的高度，将<code class="language-plaintext highlighter-rouge">ScrollView</code>撑起来，<code class="language-plaintext highlighter-rouge">iOS</code>可以了，但是<code class="language-plaintext highlighter-rouge">Android</code>上一跑，就红屏了，报这个错误，按照方法试过无效，也有说设置背景色的，仍然不行，最后调整了下布局，直接截<code class="language-plaintext highlighter-rouge">ScrollView</code>；这还没完，<code class="language-plaintext highlighter-rouge">iOS</code>模拟器上截图模糊，而<code class="language-plaintext highlighter-rouge">Android</code>一直是真机运行没有此问题，后来改用<code class="language-plaintext highlighter-rouge">iPhone</code>真机调试，没有了模糊的问题，但当<code class="language-plaintext highlighter-rouge">H5</code>页面展开过长，截取的图片为纯白色空白页面，起初怀疑和<code class="language-plaintext highlighter-rouge">ScrollView</code>嵌套<code class="language-plaintext highlighter-rouge">Webview</code>有关，但通过<code class="language-plaintext highlighter-rouge">demo</code>排除，暂时留存，打算后面再通过分段截图的方式处理</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ReacNative</code>：<code class="language-plaintext highlighter-rouge">iOS</code>正常，<code class="language-plaintext highlighter-rouge">Android</code> 报错<code class="language-plaintext highlighter-rouge">Cannot add a child that doesn't have a YogaNode to a parent without a measure function！</code></p>
+
+    <p>写好一个界面，iOS跑完全没问题，Android直接Crash，提示<code class="language-plaintext highlighter-rouge">ReacNative：报错Cannot add a child that doesn't have a YogaNode to a parent without a measure ...</code>这类信息，一脸懵逼，网上搜到了这篇文章：<a href="https://blog.csdn.net/qq_32312317/article/details/80769453">传送门</a>，因为界面内的所有模块都是抽出去写的，然后开始定位排查，最终定位到一个页面，在<code class="language-plaintext highlighter-rouge">View</code>标签中间多了空格，我使用的环境是<code class="language-plaintext highlighter-rouge">VS Code</code> ,虽然<code class="language-plaintext highlighter-rouge">VS Code</code>有自动保存的功能，但我使用任何工具都习惯默认状态，每次写完代码<code class="language-plaintext highlighter-rouge">Alt + Shift + F</code>，然后<code class="language-plaintext highlighter-rouge">CMD + S</code>, 但是对于View标签间没有子控件的情况，并不会帮我去空格，因此发生了这个BUG</p>
+
+    <p>建议：这类没有内部子控件的标签，尽量使用自闭和标签, 如 <code class="language-plaintext highlighter-rouge">&lt;View/&gt;</code></p>
+  </li>
+  <li>
+    <p>用户授权</p>
+
+    <p>当App中需要用到相机，访问一些传感器就会需要获取用户授权，在最初接到这个需求的时候，翻了翻RN的资料，然后发现了一个别人封装好的组件<code class="language-plaintext highlighter-rouge">react-native-permissions</code>,以前对<code class="language-plaintext highlighter-rouge">Android</code>适配稍微有点了解，刚好手上就有一台华为测试机，经测试效果还可以，正当我美滋滋的完成任务构建送测，测试那边反馈，两台小米都没有任何反应，开始排查问题…发现在小米手机上直接失败，考虑到国内手机厂商对<code class="language-plaintext highlighter-rouge">Android</code>的各种所谓‘定制’, <code class="language-plaintext highlighter-rouge">RN</code>默认提供的方式可能有些‘不接地气’，另外遇到的一个恶心的地方是<code class="language-plaintext highlighter-rouge">react-native-permissions</code>导致上<code class="language-plaintext highlighter-rouge">TestFlight</code>处理完一闪消失</p>
+
+    <p>解决方案<br />
+<code class="language-plaintext highlighter-rouge">Android</code>稳妥起见，我先检查授权情况，如果授权失败了，自己再加个<code class="language-plaintext highlighter-rouge">Alert</code>，提示跳到系统设置页手动开启权限<br />
+<code class="language-plaintext highlighter-rouge">iOS</code>也是授权问题，当时没看这个库的源码，里面使用了很多我们未曾用到的权限代码，，在<code class="language-plaintext highlighter-rouge">plist</code>中全部加上即可</p>
+
+    <p>缺点是<br />
+个别机型通过获取授权能够弹出提供授权选项，会遇到多次弹框，而之前发现有问题的小米机型上指挥收到一次自定义弹框。<br />
+为啥没有跳到对应App的权限设置页，因为我对<code class="language-plaintext highlighter-rouge">Android</code>不熟，搜出来了适配所有国内手机厂商的代码，看的我难受</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">2020-07-20</code> 好久没写过<code class="language-plaintext highlighter-rouge">RN</code>了, 换了设备随着上次升级<code class="language-plaintext highlighter-rouge">TypeScript</code>这次重新回到<code class="language-plaintext highlighter-rouge">RN</code>又一次升级了, 重新搭建<code class="language-plaintext highlighter-rouge">React-Native</code>环境,  因为<code class="language-plaintext highlighter-rouge">0.62</code>更换了<code class="language-plaintext highlighter-rouge">CocoaPods</code>管理<code class="language-plaintext highlighter-rouge">iOS</code>依赖库, 准备先把<code class="language-plaintext highlighter-rouge">Android</code>环境跑通, 首次执行<code class="language-plaintext highlighter-rouge">react-native run-android</code>遭遇滑铁卢, 情理之中, 意料之内.</p>
+
+    <p>在运行<code class="language-plaintext highlighter-rouge">react-native run-android</code>后报错如图:<br />
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/run-android%20报错.png?raw=true" alt="run-android 报错.png" /><br />
+进入路径下对比发现:<br />
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/此时路径下文件状态.png?raw=true" alt="此时路径下文件状态.png" /><br />
+分别去了上层目录下对比发现, 很有可能是文件没有下载完整导致, 反复执行<code class="language-plaintext highlighter-rouge">react-native run-android</code>都是没有意义的, 于是删除文件后, 重新执行<code class="language-plaintext highlighter-rouge">react-native run-android</code>等待下载安装依赖包<br />
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/run-android.gif?raw=true" alt="run-android.gif" /><br />
+从终端的输出信息来看, 我的猜想是正确的, 最后对比了下文件正确的样子<br />
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/该有的样子.png?raw=true" alt="该有的样子.png" /></p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">2020-07-20</code> 安装<code class="language-plaintext highlighter-rouge">CocoaPods</code>依赖库失败, 因为项目使用到了<code class="language-plaintext highlighter-rouge">react-native-fast-image</code>, 这个库是基于<code class="language-plaintext highlighter-rouge">SD</code>的封装, <code class="language-plaintext highlighter-rouge">SD</code>又使用到了<a href="https://github.com/webmproject/libwebp">libwebp</a>, 在<code class="language-plaintext highlighter-rouge">CDN</code>加持下, 经过一系列依赖库的安装等待后, 迎来了<code class="language-plaintext highlighter-rouge">iOS</code>环境的首个报错:</p>
+
+    <p><img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/run-ios.gif" alt="run-ios.gif" />
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/libwebp安装失败大特写.png?raw=true" alt="libwebp安装失败大特写.png" /></p>
+
+    <p><code class="language-plaintext highlighter-rouge">Cloning into '/var/folders/6s/5hf9z6_138v68pqd7v891pd80000gn/T/d20200720-84015-8v2sj1'...
+fatal: unable to access 'https://chromium.googlesource.com/webm/libwebp/': Failed to connect to chromium.googlesource.com port 443: Operation timed out</code></p>
+
+    <p>通过域名和报错信息也能猜出来啥原因了, 暂时想到两个方案:</p>
+    <ol>
+      <li>终端XXX (怕被简书再次疯, 这篇文章之前被封, 刚解封不久)</li>
+      <li>修改源
+这里采取<code class="language-plaintext highlighter-rouge">方式2</code>, 修改源的方案</li>
+    </ol>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 先确认下项目<span class="sb">`</span>react-native-fast-image<span class="sb">`</span>版本 ~&gt; <span class="sb">`</span>8.1.5<span class="sb">`</span>  
+2. <span class="sb">`</span>react-native-fast-image<span class="sb">`</span>版本依赖的<span class="sb">`</span>SDWebImageWebPCoder <span class="sb">`</span>版本 ~&gt; <span class="s1">'~&gt; 0.6.1'</span>  
+3. 在本地<span class="sb">`</span>pod<span class="sb">`</span>源仓库中找到<span class="sb">`</span>libwebp<span class="sb">`</span>并修改源  
+默认源: <span class="sb">`</span>https://chromium.googlesource.com/webm/libwebp<span class="sb">`</span>  
+替换成: <span class="sb">`</span>https://github.com/webmproject/libwebp.git<span class="sb">`</span>  
+</code></pre></div>    </div>
+
+    <p><img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/SDWebImageWebPCoder依赖版本.png?raw=true" alt="SDWebImageWebPCoder依赖版本.png" />
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/描述文件路径及默认源.png?raw=true" alt="描述文件路径及默认源.png" />
+换源保存后重新执行<code class="language-plaintext highlighter-rouge">pod install --verbose --no-repo-update</code>结果失败, 一看错误, 源地址没变, 如果你仔细看过, 在<code class="language-plaintext highlighter-rouge">描述文件路径及默认源</code>这张图中可以发现疑点, 我使用了<code class="language-plaintext highlighter-rouge">Trunk</code>源, 但是改的是<code class="language-plaintext highlighter-rouge">Master</code>中的源地址, 而我<code class="language-plaintext highlighter-rouge">podspec</code>也优先指定了<code class="language-plaintext highlighter-rouge">Trunk</code>源, 所以上一步换源无效, 重新修改对应的源地址后, 执行中验证确认修改成功
+<img src="https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/assets/这次才换源成功.png?raw=true" alt="这次才换源成功.png" />
+到此完成<code class="language-plaintext highlighter-rouge">CocoaPods</code>依赖库安装</p>
+
+    <p><code class="language-plaintext highlighter-rouge">补充:</code>关于<code class="language-plaintext highlighter-rouge">libwebp</code>路径我已经在截图中展示了, 没有详细介绍, 可以根据我截图中的路径直接查找, 为了解决复杂的环境及场景, 可以通过<code class="language-plaintext highlighter-rouge">find path -iname libwebp</code>来查找路径:</p>
+
+    <p>e.g.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shenyj@ShenYj-MBP Desktop % find <span class="o">&gt;</span>/Users/shenyj/.cocoapods/repos/trunk <span class="nt">-iname</span> libwebp  
+/Users/shenyj/.cocoapods/repos/trunk/Specs/1/9/2/libwebp
+</code></pre></div>    </div>
+  </li>
+</ul>
