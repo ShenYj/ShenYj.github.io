@@ -1,14 +1,17 @@
-# 勤奋是学习的枝叶，智慧是学习的花朵
+# ShenYj.github.io
 
-记录自己的学习笔记, 简书地址:[ShenYj](https://www.jianshu.com/u/5ec5747435a2)
+## 勤奋是学习的枝叶，当然很苦，智慧是学习的花朵，当然香郁
 
-现在简书限制越来越多, 将部分笔记重新整理后迁移到个人仓库
+-----
 
-## 学习笔记
+### My Wiki
 
-### React-Native
+- [Wiki](https://github.com/ShenYj/ShenYj.github.io/wiki)
 
-- [React-Native 学习笔记](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/学习笔记/React-Native学习日记.md)
-- [React-Native 采坑日记](https://github.com/ShenYj/ShenYj.github.io/blob/master/markdowns/React-Native/踩坑日记/React-Native采坑日记.md)
+-----
 
-### iOS
+### Social
+
+* [GitHub](https://github.com/ShenYj)
+* [ShenYj.github.io](https://shenyj.github.io)
+* [简书地址](https://www.jianshu.com/u/5ec5747435a2)
