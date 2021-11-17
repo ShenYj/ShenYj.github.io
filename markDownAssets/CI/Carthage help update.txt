@@ -1,0 +1,58 @@
+Update and rebuild the project's dependencies
+
+[--no-checkout]
+	skip the checking out of dependencies after updating
+
+[--no-build]
+	skip the building of dependencies after updating
+	(ignored if --no-checkout option is present)
+
+[--verbose]
+	print xcodebuild output inline (ignored if --no-build option is present)
+
+[--log-path (string)]
+	path to the xcode build output. A temporary file is used by default
+
+[--new-resolver]
+	use the new resolver codeline when calculating dependencies. Default is false
+
+[--use-netrc]
+	use authentication credentials from ~/.netrc file when downloading binary only frameworks
+
+[--configuration (string)]
+	the Xcode configuration to build
+	(ignored if --no-build option is present)
+
+[--platform (platform)]
+	the platforms to build for (one of 'all', 'macOS', 'iOS', 'watchOS', 'tvOS', or comma-separated values of the formers except for 'all')
+	(ignored if --no-build option is present)
+
+[--toolchain (string)]
+	the toolchain to build with
+
+[--derived-data (string)]
+	path to the custom derived data folder
+
+[--cache-builds]
+	use cached builds when possible
+
+[--no-use-binaries]
+	don't use downloaded binaries when possible
+
+[--use-xcframeworks]
+	create xcframework bundles instead of one framework per platform (requires Xcode 12+)
+
+[--use-ssh]
+	use SSH for downloading GitHub repositories
+
+[--use-submodules]
+	add dependencies as Git submodules
+
+[--color (color)]
+	whether to apply color and terminal formatting (one of 'auto', 'always', or 'never')
+
+[--project-directory (string)]
+	the directory containing the Carthage project
+
+[<dependency names…>]
+	the dependency names to update, checkout and build
